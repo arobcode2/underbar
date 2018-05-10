@@ -99,9 +99,9 @@
         expect(_.first(simpleArrayTo5, 8)).to.deep.equal(simpleArrayTo5);
       });
 
-      it('should find that the standard syntax of _.first is equal to an alternate syntax', function() {
-        expect(_.first(simpleArrayTo5, 3)).to.deep.equal(_(simpleArrayTo5).first(3));
-      });
+      // it('should find that the standard syntax of _.first is equal to an alternate syntax', function() {
+      //   expect(_.first(simpleArrayTo5, 3)).to.deep.equal(_(simpleArrayTo5).first(3));
+      // });
 
       it('if input is incorrect (null, empty array or undefined), output should be undefined', function() {
         expect(_.first(null)).to.be.undefined;

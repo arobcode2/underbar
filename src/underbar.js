@@ -7,8 +7,8 @@
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
-
   /**
    * COLLECTIONS
    * ===========
@@ -30,13 +30,49 @@
 
   // Return an array of the first n elements of an array. If n is undefined,
   // return just the first element.
+  //inputs: 1 array, 1 number
+  //outputs: 1st element if n is undefined, 1 array of first n elements
+  //constraints: not applicable
+  //edge cases: an empty array
   _.first = function(array, n) {
-    return n === undefined ? array[0] : array.slice(0, n);
+    //return n === undefined ? array[0] : array.slice(0, n);
+    if (array !== null && array !== undefined) {
+      if (n === undefined) {
+        return array[0];
+      } else if (n > 0) {
+        return array.slice(0, n);
+        } else if (n <= 0) {
+        return [];
+        } else if (typeof n === 'object') {
+        return [];
+        } else if (arguments[1] === undefined) {
+        return [];
+        }
+    }
+    if (array === null || array === [] || array === undefined) {
+      return undefined;
+    }
   };
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+    if (array !== null && array !== undefined) {
+      if (n === undefined) {
+        return array[array.length - 1];
+      } else if (n > 0) {
+        return array.slice(-n);
+        } else if (n <= 0) {
+        return [];
+        } else if (typeof n === 'object') {
+        return [];
+        } else if (arguments[1] === undefined) {
+        return [];
+        }
+    }
+    if (array === null || array === [] || array === undefined) {
+      return undefined;
+    }
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -44,7 +80,35 @@
   //
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
+
+   //Part-1 -IOCE
+  //i.p= collection (array or object), iterator which is a function and accepts 3 arguments(element, index, list)
+  //o/p= return input
+  //constraints = n/a
+  //edge cases = empty array/object, null and undefined as i/p's
+
+  //part-2 - Strategy, Transformation steps
+  // strategy : pass in an array [1,2,3,4] and apply the iterator on each element 
+  //for objects: pass in an object {'a': 1, 'b':2, 'c': 3} and apply the iterator on each value of each key in object
+
+  //pseudocode
+  //if collection is an array 
+    //iterate thru array 
+      //apply iterator onto each element
+  //if collection is an object
+    //iterate thru each key 
+      //apply iterator onto each value of the key
   _.each = function(collection, iterator) {
+    if(Array.isArray(collection)) {
+      for (var i=0; i<collection.length; i++) {
+        iterator(collection[i], i, collection);
+      }
+    } else {
+      for(var key in collection) {
+        iterator(collection[key], key, collection);
+      }
+    }
+     return collection;
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -53,6 +117,15 @@
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
     // it uses the iteration helper `each`, which you will need to write.
+
+    //Part-1-IOCE:
+    //i/p = array, target index
+    //o/p = one value 
+    // constraints = arrays only
+    //edge case = nested array, empty array
+    
+    //Part-2:
+    //
     var result = -1;
 
     _.each(array, function(item, index) {
