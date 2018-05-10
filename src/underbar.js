@@ -125,16 +125,32 @@
     //edge case = nested array, empty array
     
     //Part-2:
-    //
+    //try for ([1, [2, 3]], [2,3])
+    //try for ([1, 2, 3, 4, 1, 3], 1, 1)
     var result = -1;
+    var results = [];
 
     _.each(array, function(item, index) {
       if (item === target && result === -1) {
         result = index;
       }
     });
-
-    return result;
+    
+    if(typeof arguments[2] === 'number') {
+      if (arguments[2] > array.length) {
+        return -1;  
+      }
+      for (var i = arguments[2]; i < array.length; i++) {
+        if (array[i] === target) {
+          results.push(i);
+        }  
+      }
+    }
+    if (arguments[2]) {
+      return results[0];
+    } else {
+      return result;  
+    }
   };
 
   // Return all elements of an array that pass a truth test.
