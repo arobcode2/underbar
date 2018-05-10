@@ -193,7 +193,7 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
-   //inputs: collection (1 array or object), function
+    //inputs: collection (1 array or object), function
     //outputs: a new array
     //constraints: N/A
     //edge cases: empty collection
