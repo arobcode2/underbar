@@ -193,7 +193,42 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
-  };
+   //inputs: collection (1 array or object), function
+    //outputs: a new array
+    //constraints: N/A
+    //edge cases: empty collection
+    //transformations and strategy:
+    //strategy: obtain a new array that has all the elements that pass the truth test
+    //psuedocode:
+    //if collection is an array
+      //iterate through array
+        //applying the test on each item
+      //return new array with modified elements
+    //else if the collection is an object
+      //iterate through object
+        //apply the test on each value
+      //return new array with modified elements
+      var results = [];
+      if (Array.isArray(collection)) {
+        _.each(collection, function(item, index) {
+          if (test(item) === true) {
+            results.push(item);
+          }
+        });
+        //return results;
+      }
+      else {
+        for (var key in collection) {
+          if (test === undefined) {
+            results.push(collection[key]);
+          } else if (test(collection['key']) === true) {
+            results.push(collection['key']);
+          }
+        }
+        //return results;
+      }
+      return results;
+    };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
