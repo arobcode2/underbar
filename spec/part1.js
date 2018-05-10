@@ -658,11 +658,11 @@
         expect(_.reject([2,4,6,8], isEven)).to.deep.equal([]);
       });
 
-      it('should return a new object with only properties that pass the predicate', function() {
+      it('should return a new array with only properties that pass the predicate', function() {
         expect(_.reject(obj, isEven)).to.deep.equal([1,3]);
       });
 
-      it('should return an empty object if no properties pass the predicate', function() {
+      it('should return an empty array if no properties pass the predicate', function() {
         expect(_.reject(objTwo, isEven)).to.deep.equal([]);
       });
 

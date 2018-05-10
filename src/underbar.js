@@ -234,6 +234,17 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    //could create a new array and then newArr.push(!_.filter(collection, test))
+    var newArr = [];
+    // newArr.push(!_.filter(collection, test));
+    // return newArr;
+    _.filter(collection, function(element) {
+      if (test(element) !== true) {
+        newArr.push(element);
+      }
+    });
+    return newArr;
+
   };
 
   // Produce a duplicate-free version of the array.
