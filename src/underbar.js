@@ -153,6 +153,44 @@
     }
   };
 
+  _.findIndex = function(array, test) {
+  //Part-1:IOCE
+  //I/P- Array and function
+  //o/p- return the first index of passed value
+  //constraints - only for arrays
+  // edge cases - empty array, mixed arrays
+  //Part-2: strategy and transformation
+  // strategy: find the index that passes the truth test and push it to array and return the first 
+  //element in array
+  //transformation:
+  //[1,2,3,4,5,6] 
+  // let function be a  truth test that returns only even numbers
+  // [1,3,5]= return 1;
+  //pseudocode:
+  // create a place holder array to hold indices that pass truth test
+  // iterate thru each element in array and 
+    // apply test on each element in array
+      //if element passes the truth test then push element to place holder array
+  // return first element in place holder array 
+  var results = [];
+   
+   if (test === undefined) {
+    return 0;
+   }
+   _.each(array, function(item, index){
+    if (test(item) === true) {
+      results.push(array.indexOf(item));
+    } 
+   });
+
+   if(results.length === 0) {
+    return -1;
+   } else {
+    return results[0];
+   }
+   
+  };
+
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
   };
