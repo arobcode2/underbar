@@ -284,28 +284,28 @@
     var resultsSorted;
     var mySet = new Set();
 
-      if (iterator) {
-        _.each(array, function(item, index) {
+      // if (arguments) {
+      //   _.each(array, function(item, index) {
+      //     mySet.add(iterator(item));
+      //     });
+      //   results = Array.from(mySet);
+      //   return results;
+      // } else {
+      //    _.each(array, function(element) {
+      //     mySet.add(element);
+      //   });
+      //   results = Array.from(mySet);
+      //   return results;
+      // }
+      if (arguments[1] === undefined || typeof arguments[1] === 'boolean') {
+        _.each(array, function(item) {
+          mySet.add(item);
+          });
+        results = Array.from(mySet);
+        return results;
+      } else {
+        _.each(array, function(item) {
           mySet.add(iterator(item));
-          });
-        results = Array.from(mySet);
-        return results;
-      } else {
-         _.each(array, function(element) {
-          mySet.add(element);
-        });
-        results = Array.from(mySet);
-        return results;
-      }
-      if (isSorted) {
-        _.each(array, function(item, index) {
-          mySet.add(item);
-          });
-        results = Array.from(mySet);
-        return results;
-      } else {
-        _.each(array, function(item, index) {
-          mySet.add(item);
           });
         results = Array.from(mySet);
         return results;
@@ -318,6 +318,39 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    //inputs: 1 collection (array or object), a function
+    // o/p = new array
+    // constraints -NA
+    // Edge cases = empty array
+    // transformation and strategy
+    // lets take an array [1,2,3,4,5]
+    //apply iterator = element*2 on each element in array
+    // we want to push each new value into new array
+    // return array [2,4,6,8,10]
+   //pseudocode
+   // initialize a new array
+   // if collection is array 
+    //iterate thru array
+      // push modified elements into new array
+   // return new array
+    // else 
+     //iterate thry obj
+      // push modified values of keys into new array
+   //return new array
+      
+   var results = [];
+    if(Array.isArray(collection)) {
+      _.each(collection, function(item) {
+          results.push(iterator(item)); 
+      });
+      return results;
+    } else {
+      for (var key in collection) {
+        results.push(iterator(collection[key]));
+      }
+      return results;
+    }
+   
   };
 
   /*
@@ -359,6 +392,52 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+      //pseudocode
+      // declare start count;
+      //if collection is array
+          // if arraylength is greater than 1
+       //iterate thru array 
+         //apply iterator on i and add it to start count
+       //return count;
+      //else 
+        //if object.values.length> 1 
+         //iterate thru object.values 
+          //apply iterator on i and add it to start count
+       //return count;
+         // if arguments[2]
+          // set the start count = accumulator
+       var startCount;
+       if (arguments[2]) {
+        startCount = accumalator;
+       } else {
+        startCount;
+       }
+
+    if (Array.isArray(collection)) {
+      if (collection.length > 1) { 
+        _.each(collection, function(item) {
+          var modifiedElement = iterator(item);
+          startCount += modifiedElement;
+      }); 
+      return startCount;
+     } else {
+      return collection[0];
+     }
+    } else {
+      var objValues = Object.values(collection);
+    if (objValues.length > 1) {
+       _.each(objValues, function(item) {
+          var modifiedElement = iterator(item);
+          startCount += modifiedElement;
+      }); 
+      return startCount;
+    }
+    else {
+      return objValues[0];
+    }
+    }
+   
+
   };
 
   // Determine if the array or object contains a given value (using `===`).
