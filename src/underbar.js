@@ -221,8 +221,8 @@
         for (var key in collection) {
           if (test === undefined) {
             results.push(collection[key]);
-          } else if (test(collection['key']) === true) {
-            results.push(collection['key']);
+          } else if (test(collection[key]) === true) {
+            results.push(collection[key]);
           }
         }
         //return results;
@@ -235,20 +235,81 @@
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
     //could create a new array and then newArr.push(!_.filter(collection, test))
-    var newArr = [];
+    //var newArr = [];
     // newArr.push(!_.filter(collection, test));
     // return newArr;
-    _.filter(collection, function(element) {
-      if (test(element) !== true) {
-        newArr.push(element);
-      }
+    var rejected = _.filter(collection, function(element) {
+      return (!test(element));
     });
-    return newArr;
+    return rejected;
 
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    //inputs: an array, a boolean, and a function
+    //outputs: an array
+    //constraints: works only for an array
+    //edge cases: n/a
+    //strategy and transformations:
+    //strategy: to get an array without repetitive elements
+    //first see if the array is sorted and if it is not sorted then sort it
+    //next iterate through each element in array
+      //if element is unique
+        //push into new array
+    //return new array
+    //if (isSorted) {
+          //   for (var i = 0; i < array.length; i++) {
+      //     if (element !== array[i]) {
+      //       results.push(element);
+      //     }
+      //   }
+    // } else {
+    //   resultsSorted = array.sort(function(a, b) {
+    //     return a - b;
+    //   });
+    //    _.each(resultsSorted, function(element) {
+    //       mySet.add(element);
+    //   //   for (var i = 0; i < resultsSorted.length; i++) {
+    //   //     if (element !== resultsSorted[i]) {
+    //   //       results.push(element);
+    //   //     }
+    //   //   }
+    //    });
+    //    results = Array.from(mySet);
+    //   return results;
+    //}
+
+    var results = [];
+    var resultsSorted;
+    var mySet = new Set();
+
+      if (iterator) {
+        _.each(array, function(item, index) {
+          mySet.add(iterator(item));
+          });
+        results = Array.from(mySet);
+        return results;
+      } else {
+         _.each(array, function(element) {
+          mySet.add(element);
+        });
+        results = Array.from(mySet);
+        return results;
+      }
+      if (isSorted) {
+        _.each(array, function(item, index) {
+          mySet.add(item);
+          });
+        results = Array.from(mySet);
+        return results;
+      } else {
+        _.each(array, function(item, index) {
+          mySet.add(item);
+          });
+        results = Array.from(mySet);
+        return results;
+      }
   };
 
 
