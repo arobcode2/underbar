@@ -253,63 +253,32 @@
     //edge cases: n/a
     //strategy and transformations:
     //strategy: to get an array without repetitive elements
-    //first see if the array is sorted and if it is not sorted then sort it
-    //next iterate through each element in array
-      //if element is unique
-        //push into new array
-    //return new array
-    //if (isSorted) {
-          //   for (var i = 0; i < array.length; i++) {
-      //     if (element !== array[i]) {
-      //       results.push(element);
-      //     }
-      //   }
-    // } else {
-    //   resultsSorted = array.sort(function(a, b) {
-    //     return a - b;
-    //   });
-    //    _.each(resultsSorted, function(element) {
-    //       mySet.add(element);
-    //   //   for (var i = 0; i < resultsSorted.length; i++) {
-    //   //     if (element !== resultsSorted[i]) {
-    //   //       results.push(element);
-    //   //     }
-    //   //   }
-    //    });
-    //    results = Array.from(mySet);
-    //   return results;
-    //}
+   iterator = iterator || _.identity;
+     if(typeof arguments[1] === 'function'){
+       iterator = isSorted;
+       isSorted = false;
+     }
+     var transform = array.map(iterator);
+     var results = [];
+     var iteration = [];
+ 
+     if (isSorted) {
+       for (var i = 0; i < array.length; i++) {
+         if (!i || iteration[iterated.length - 1] !== transform[i]) {
+           iteration.push(transform[i]);
+           results.push(array[i]);
+         }
+       }
+     } else {
+       for(var i = 0; i < array.length; i++){
+         if(iteration.indexOf(transform[i]) < 0){
+           iteration.push(transform[i]);
+           results.push(array[i]);
+         }
+       }
+     }
+     return results;
 
-    var results = [];
-    var resultsSorted;
-    var mySet = new Set();
-
-      // if (arguments) {
-      //   _.each(array, function(item, index) {
-      //     mySet.add(iterator(item));
-      //     });
-      //   results = Array.from(mySet);
-      //   return results;
-      // } else {
-      //    _.each(array, function(element) {
-      //     mySet.add(element);
-      //   });
-      //   results = Array.from(mySet);
-      //   return results;
-      // }
-      if (arguments[1] === undefined || typeof arguments[1] === 'boolean') {
-        _.each(array, function(item) {
-          mySet.add(item);
-          });
-        results = Array.from(mySet);
-        return results;
-      } else {
-        _.each(array, function(item) {
-          mySet.add(iterator(item));
-          });
-        results = Array.from(mySet);
-        return results;
-      }
   };
 
 
