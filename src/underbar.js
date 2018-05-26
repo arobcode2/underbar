@@ -253,31 +253,23 @@
     //edge cases: n/a
     //strategy and transformations:
     //strategy: to get an array without repetitive elements
-   iterator = iterator || _.identity;
-     if(typeof arguments[1] === 'function'){
-       iterator = isSorted;
-       isSorted = false;
-     }
-     var transform = array.map(iterator);
-     var results = [];
-     var iteration = [];
- 
-     if (isSorted) {
-       for (var i = 0; i < array.length; i++) {
-         if (!i || iteration[iterated.length - 1] !== transform[i]) {
-           iteration.push(transform[i]);
-           results.push(array[i]);
-         }
-       }
-     } else {
-       for(var i = 0; i < array.length; i++){
-         if(iteration.indexOf(transform[i]) < 0){
-           iteration.push(transform[i]);
-           results.push(array[i]);
-         }
-       }
-     }
-     return results;
+   var no_of_args = arguments.length;
+  iterator = ((no_of_args === 2) && (typeof arguments[1] === 'function')) ? isSorted :
+             ((no_of_args === 3) && (typeof arguments[2] === 'function')) ? iterator : _.identity;
+  isSorted = ((no_of_args === 2) && (typeof arguments[1] === 'boolean')) ? isSorted : false;
+       
+    var transform = array.map(iterator);
+    var results = [];
+    var iteration = [];
+
+     for(var i = 0; i < array.length; i++){
+        if(iteration.indexOf(transform[i]) < 0){
+          iteration.push(transform[i]);
+          results.push(array[i]);
+        }
+      }
+   
+    return results;
 
   };
 

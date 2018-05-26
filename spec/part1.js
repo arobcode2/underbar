@@ -701,134 +701,48 @@
     });
 
     describe("uniq", function() {
-
-      it("should return an array without any duplicates", function() {
-        chai.assert.deepEqual(_.uniq([1, 2, 2, 3, 1]), [1, 2, 3]);
-        chai.assert.deepEqual(_.uniq(['b', 'b', 'c', 'a', 'c']), ['b', 'c', 'a']);
+      it("should exist", function() {
+        expect(_.uniq).to.exist;
       });
 
-      it("should read nested arrays as different", function() {
-        chai.assert.deepEqual(_.uniq([[1, 2], [1, 2], 3, 1]), [[1, 2], [1,2], 3, 1]);
+      //it should not mutate the original array
+      it("it should not mutate the original array", function() {
+        let arr1 = [1, 2, 3, 4, 5, 5];
+        _.uniq(arr1);
+        expect(arr1).to.deep.equal([1, 2, 3, 4, 5, 5]);
       });
 
-      it("should return an empty array when given an empty array", function() {
-        chai.assert.deepEqual(_.uniq([]), []);
+      //if the list is empty, then return an empty array
+      it("if the list is empty, then return an empty array", function() {
+        expect(_.uniq([])).to.deep.equal([]);
       });
 
-      it("should work with an iteratee", function() {
-        chai.assert.deepEqual(_.uniq([1, 3, 3, 9], function(x) { if (x === 3) {return x*3}}), [1, 3]);
+      //it should return an array with no duplicate values
+      it("it should return an array with no duplicate values", function() {
+        expect(_.uniq([1, 1, 2, 3, 4, 5, 6, 6, 7])).to.deep.equal([1, 2, 3, 4, 5, 6, 7]);
       });
 
-      it("should work with an iteratee", function() {
-        chai.assert.deepEqual(_.uniq([{a: 1}, {a: 2}, {a: 1}, {a: 1}], function(val, key) {return key[val];}), [{a: 1}]);
+      //it should compute much faster if isSorted is set to true
+      it("it should not return a sorted list if isSorted is set to false", function() {
+        let sorted = [1, 1, 1, 2, 2, 2, 3, 3, 3, 4];
+        let unSorted = [4, 3, 1, 1, 2, 3, 1, 2, 2, 3];
+
+        expect(_.uniq(sorted, true)).to.not.deep.equal(_.uniq(unSorted, false));
       });
 
-      it("should not alter the original array", function() {
-        var arr = [1, 2, 2, 3]
-        _.uniq(arr);
-        chai.assert.deepEqual(arr, [1, 2, 2, 3]);
+      //it should give a unique list of items based on our iteratee function
+      it("it should give a unique list of items based on our iteratee function", function() {
+        let mySorted = [1, 1, 2, 2, 2, 3, 3, 3, 4, 4];
+        let myIter = function(value) {
+          return value === 3;
+        };
+
+        expect(_.uniq(mySorted, myIter)).to.deep.equal([1, 3]);
       });
 
-      it("should work for array of placeholders, comes out as undefined", function() {
-        var arr = Array(5);
-        arr.push(5);
-        chai.assert.deepEqual(_.uniq(arr), [undefined, 5]);
-      });
-
-
-      it("should be faster when include isSorted", function() {
-        var arr = _.range(1000);
-        var t0 = performance.now();
-        _.uniq(arr, true);
-        var t1 = performance.now();
-        var t2 = performance.now();
-        _.uniq(arr);
-        var t3 = performance.now();
-
-        var sortSpd = t1 - t0;
-        var regSpd = t3 - t2;
-        chai.assert.equal(sortSpd < regSpd, true);
-      });
-      it("should not mutate the input array", function() {
-        var input = [1, 2, 3, 4, 5];
-        var result = _.uniq(input);
-
-        /*
-         * Mutation of inputs should be avoided without good justification otherwise
-         * as it can often lead to hard to find bugs and confusing code!
-         * Imagine we were reading the code above, and we added the following line:
-         *
-         * var lastElement = input[input.length - 1];
-         *
-         * Without knowing that mutation occured inside of _.uniq,
-         * we would assume that `lastElement` is 5. But if inside of
-         * _.uniq, we use the array method `pop`, we would permanently
-         * change `input` and our assumption would not longer be true,
-         * `lastElement` would be 4 instead!
-         *
-         * The tricky part is that we have no way of knowing about the mutation
-         * just by looking at the code above. We'd have to dive into the
-         * implementation of _.uniq to the exact line that uses `pop`.
-         * If we write a lot of code with this assumption, it might be very hard
-         * to trace back to the correct line in _.uniq.
-         *
-         * You can avoid an entire class of bugs by writing functions
-         * that don't mutate their inputs!
-         */
-
-        expect(input).to.eql([1, 2, 3, 4, 5]);
-      });
-
-      it("should return all unique values contained in an unsorted array", function() {
-        var numbers = [1, 2, 1, 3, 1, 4];
-
-        expect(_.uniq(numbers)).to.eql([1, 2, 3, 4]);
-      });
-
-      it("should produce a brand new array instead of modifying the input array", function() {
-        var numbers = [1, 2, 1, 3, 1, 4];
-        var uniqueNumbers = _.uniq(numbers);
-
-        expect(uniqueNumbers).to.not.equal(numbers);
-      });
-      it('should return unique values if all values are unique', function() {
-        expect(_.uniq([1, 2, 3])).to.deep.equal([1, 2, 3]);
-      });
-
-      it('should return only unique values if some values are not not unique', function() {
-        expect(_.uniq([1, 2, 3, 2, 1,])).to.deep.equal([1, 2, 3]);
-      });
-
-      it('should return the unique set of strings', function() {
-        expect(_.uniq(['apple', 'ball', 'apple', 'cat'])).to.deep.equal(['apple', 'ball', 'cat']);
-      });
-
-      it('should return an empty array if passed in an empty array', function() {
-        expect(_.uniq([null, null, null])).to.deep.equal([null]);
-      });
-
-      it('should return an empty array if passed in an empty array', function() {
-        expect(_.uniq([ , ])).to.deep.equal([undefined]);
-      });
-
-      it('should treat all nested arrays as unique values regardless of its contents', function() {
-        expect(_.uniq([[1, 2], 1, 2,[ 1, 2]])).to.deep.equal([[ 1, 2], 1, 2,[ 1, 2]]);
-      }); //Unexpected
-
-      it('should return the first true and false unique values if passed in an iteratee', function() {
-        var isEven = function(num) {return num % 2 === 0;}
-        expect(_.uniq([2, 1, 4, 4, 6, 6, 8, 8, 9, 3], isEven)).to.deep.equal([2, 1]);
-      }); //Unexpected
-
-      it('should return the first two even and odd elements', function() {
-        var evenLength = function(elem) {return elem.length % 2 === 0}
-        expect(_.uniq(['apple', 'ball', 'apple', 'cat', 'dogs'], evenLength)).to.deep.equal(['apple', 'ball']);
-      }); //Unexpected
-
-      it('should return a modified array', function() {
-        var isEven = function(num) {return num % 2 === 0;}
-        var num = [2, 1, 4, 4, 6, 6, 8, 8, 9, 3];
-        expect(_.uniq(num, isEven)).to.not.equal(num);
+      //it should expect our result to be an array
+      it("it should expect our result to be an array", function() {
+        expect(Array.isArray(_.uniq([1, 1, 2, 3, 4, 5, 6, 6, 7]))).to.deep.equal(true);
       });
     });
 
